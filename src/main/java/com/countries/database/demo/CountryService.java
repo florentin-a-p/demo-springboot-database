@@ -1,58 +1,51 @@
 package com.countries.database.demo;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
+@Component
 @Service
 public class CountryService {
-  // create the dummy existing data first, stored in a hashmap
-  public CountryService() {
-    countryMap.put(1, country1);
-    countryMap.put(2, country2);
-    countryMap.put(3, country3);
+  @Autowired
+  CountryRepository countryRepository;
+  public List<Country> getCountries() {
+    return (List<Country>) countryRepository.findAll();
   }
 
-  HashMap<Integer, Country> countryMap = new HashMap<Integer, Country>();
-  Country country1 = new Country(1,"Indonesia","Jakarta");
-  Country country2 = new Country(2,"Malaysia","Kuala Lumpur");
-  Country country3 = new Country(3,"Thailand","Bangkok");
-
-  public List getCountries() {
-    List<Country> list = new ArrayList<Country>(countryMap.values());
-    return list;
-  }
-
-  public Country getCountriesWithId(int countryId) {
-    return countryMap.get(countryId);
+  public Country getCountriesWithId(Integer countryId) {
+    return countryRepository.findById(countryId).get();
   }
 
   public Country getCountriesWithName(String countryName) {
-    for(int i=0;i<countryMap.size();i++){
-      if (Objects.equals(countryName, countryMap.get(i + 1).getCountryName())) {
-        return countryMap.get(i+1);
+    List<Country> countryList = (List<Country>) countryRepository.findAll();
+    for (Country country:countryList) {
+      if (countryName == country.getCountryName()) {
+        return country;
       }
     }
     return new Country(0,"NONE","NONE");
   }
 
   public Country addCountry(Country addedCountry) {
-    int maxId = countryMap.size()+1;
-    addedCountry.setId(maxId);
-    countryMap.put(maxId,addedCountry);
-    return countryMap.get(maxId);
+    long size = countryRepository.count();
+    Integer newId = (int) size + 1;
+    Country country = new Country(newId, addedCountry.getCountryName(), addedCountry.getCapital());
+    countryRepository.save(country);
+    return countryRepository.findById(newId).get();
   }
 
   public Country updateCountry(Country updatedCountry) {
-    countryMap.put(updatedCountry.getId(),updatedCountry);
-    return countryMap.get(updatedCountry.getId());
+    countryRepository.save(updatedCountry);
+    return countryRepository.findById(updatedCountry.getId()).get();
   }
 
-  public ResponseMessage deleteCountry(int countryId) {
-    countryMap.remove(countryId);
-    return new ResponseMessage("country deleted");
+  public ResponseMessage deleteCountry(Integer countryId) {
+    // how to print out some messages to console without having to return it and finish the process?
+
+    countryRepository.deleteById(countryId);
+    return new ResponseMessage("Country deleted");
   }
 }

@@ -15,7 +15,6 @@ import java.util.List;
 
 @RestController
 public class CountriesController {
-  //CountryService countryService = new CountryService();
   @Autowired
   CountryService countryService;
 
@@ -26,7 +25,7 @@ public class CountriesController {
   }
 
   @GetMapping(path="/getCountries/{countryId}")
-  public Country getCountriesWithId(@PathVariable int countryId) {
+  public Country getCountriesWithId(@PathVariable Integer countryId) {
     return countryService.getCountriesWithId(countryId);
   }
 
@@ -46,7 +45,7 @@ public class CountriesController {
   }
 
   @DeleteMapping(path="deleteCountry/{countryId}")
-  public ResponseMessage deleteCountry(@PathVariable int countryId) {
+  public ResponseMessage deleteCountry(@PathVariable Integer countryId) {
     return countryService.deleteCountry(countryId);
   }
 }

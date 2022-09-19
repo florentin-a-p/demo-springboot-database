@@ -1,11 +1,26 @@
 package com.countries.database.demo;
 
-/**
- * // TODO Comment
- */
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="springboot_country_tbl")
+@NoArgsConstructor
 public class Country {
+  @Id
+  @Column(name="id")
+  @GeneratedValue
   private int id;
+
+  @Column(name="countryname")
   private String countryName;
+
+  @Column(name="countrycapital")
   private String capital;
 
   public Country(int id, String countryName, String capital) {
