@@ -22,7 +22,7 @@ public class CountryService {
   public Country getCountriesWithName(String countryName) {
     List<Country> countryList = (List<Country>) countryRepository.findAll();
     for (Country country:countryList) {
-      if (countryName == country.getCountryName()) {
+      if (countryName.equals(country.getCountryName())) {
         return country;
       }
     }
