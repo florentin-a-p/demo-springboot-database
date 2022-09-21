@@ -1,5 +1,6 @@
 package com.countries.database.demo;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Component
 @Service
+@Slf4j
 public class CountryService {
   @Autowired
   CountryRepository countryRepository;
@@ -31,9 +33,13 @@ public class CountryService {
 
   public Country addCountry(Country addedCountry) {
     long size = countryRepository.count();
+    log.info("[FLO] REPOSITORY SIZE IS: " + size);
     Integer newId = (int) size + 1;
+    log.info("[FLO] newId IS: " + newId);
     Country country = new Country(newId, addedCountry.getCountryName(), addedCountry.getCapital());
+    log.info("[FLO] newly added country is: " + country.getId() + country.getCountryName() + country.getCapital());
     countryRepository.save(country);
+    log.info("[FLO] newly added country in repository is: " + countryRepository.findById(newId).get());
     return countryRepository.findById(newId).get();
   }
 
@@ -43,8 +49,6 @@ public class CountryService {
   }
 
   public ResponseMessage deleteCountry(Integer countryId) {
-    // how to print out some messages to console without having to return it and finish the process?
-
     countryRepository.deleteById(countryId);
     return new ResponseMessage("Country deleted");
   }
