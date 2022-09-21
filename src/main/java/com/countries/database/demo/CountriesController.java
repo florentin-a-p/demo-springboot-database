@@ -24,36 +24,60 @@ public class CountriesController {
   @GetMapping(path="/getCountries")
   public ResponseEntity<List> getCountries() {
     log.info("[FLO] /getCountries is called");
-    return new ResponseEntity<>(countryService.getCountries(), HttpStatus.OK);
+    try {
+      return new ResponseEntity<>(countryService.getCountries(), HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
   }
 
   @GetMapping(path="/getCountries/{countryId}")
   public ResponseEntity<Country> getCountriesWithId(@PathVariable Integer countryId) {
     log.info("[FLO] /getCountries/{countryId} is called");
-    return new ResponseEntity<>(countryService.getCountriesWithId(countryId), HttpStatus.OK);
+    try {
+      return new ResponseEntity<>(countryService.getCountriesWithId(countryId), HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
   }
 
   @GetMapping(path="/getCountries/countryName")
   public ResponseEntity<Country> getCountriesWithName(@RequestParam(value="name") String countryName) {
     log.info("[FLO] /getCountries/countryName is called");
-    return new ResponseEntity<>(countryService.getCountriesWithName(countryName), HttpStatus.OK);
+    try {
+      return new ResponseEntity<>(countryService.getCountriesWithName(countryName), HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
   }
 
   @PostMapping(path="addCountry")
-  public Country addCountry(@RequestBody Country addedCountry) {
+  public ResponseEntity<Country> addCountry(@RequestBody Country addedCountry) {
     log.info("[FLO] /addCountry is called");
-    return countryService.addCountry(addedCountry);
+    try {
+      return new ResponseEntity<>(countryService.addCountry(addedCountry), HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
   }
 
   @PutMapping(path="updateCountry")
   public ResponseEntity<Country> updateCountry(@RequestBody Country updatedCountry) {
     log.info("[FLO] /updateCountry is called");
-    return new ResponseEntity<>(countryService.updateCountry(updatedCountry), HttpStatus.OK);
+    try {
+      return new ResponseEntity<>(countryService.updateCountry(updatedCountry), HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
   }
 
   @DeleteMapping(path="deleteCountry/{countryId}")
   public ResponseEntity<ResponseMessage> deleteCountry(@PathVariable Integer countryId) {
     log.info("[FLO] deleteCountry/{countryId} is called");
-    return new ResponseEntity<>(countryService.deleteCountry(countryId), HttpStatus.OK);
+    try {
+      return new ResponseEntity<>(countryService.deleteCountry(countryId), HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
   }
 }
