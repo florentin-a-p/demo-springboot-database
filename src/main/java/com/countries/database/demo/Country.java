@@ -8,46 +8,46 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="springboot_country_tbl")
+@Table(name = "springboot_country_tbl")
 @NoArgsConstructor
 public class Country {
-  @Id
-  @Column(name="id")
-  private int id;
+    @Id
+    @Column(name = "id")
+    private int id;
 
-  @Column(name="countryname")
-  private String countryName;
+    @Column(name = "countryname")
+    private String countryName;
 
-  @Column(name="countrycapital")
-  private String capital;
+    @Column(name = "countrycapital")
+    private String capital;
 
-  public Country(int id, String countryName, String capital) {
-    this.id = id;
-    this.countryName = countryName;
-    this.capital = capital;
-  }
+    public Country(int id, String countryName, String capital) {
+        this.id = id;
+        this.countryName = countryName;
+        this.capital = capital;
+    }
 
-  public int getId() {
-    return id;
-  }
+    public int getId() {
+        return id;
+    }
 
-  public void setId(int id) {
-    this.id = id;
-  }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  public String getCountryName() {
-    return countryName;
-  }
+    public String getCountryName() {
+        return countryName;
+    }
 
-  public void setCountryName(String countryName) {
-    this.countryName = countryName;
-  }
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
 
-  public String getCapital() {
-    return capital;
-  }
+    public String getCapital() {
+        return capital;
+    }
 
-  public void setCapital(String capital) {
-    this.capital = capital;
-  }
+    public void setCapital(String capital) {
+        this.capital = capital;
+    }
 }
