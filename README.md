@@ -1,5 +1,7 @@
 # demo-springboot-database
 
+[![Coverage Status](https://coveralls.io/repos/github/florentin-a-p/demo-springboot-database/badge.svg)](https://coveralls.io/github/florentin-a-p/demo-springboot-database)
+
 A Java Springboot application that provides CRUD APIs that can read and update countries, which are stored in PostgreSQL database. The build tool is Gradle. This is the iteration of https://github.com/florentin-a-p/demo-springboot-hashmap which stores the data in HashMap. The next iteration will implement all API versioning methods and try to save data in AWS cloud database instead of local database
 
 Differences from the previous hashmap version:
