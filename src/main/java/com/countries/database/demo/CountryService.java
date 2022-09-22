@@ -2,16 +2,14 @@ package com.countries.database.demo;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
 @Service
 @Slf4j
 public class CountryService {
-  @Autowired
+  @Autowired(required = false)
   CountryRepository countryRepository;
   public List<Country> getCountries() {
     return (List<Country>) countryRepository.findAll();
