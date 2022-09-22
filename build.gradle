@@ -31,3 +31,20 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+jacocoTestReport {
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        csv.enabled = false
+    }
+}
+
+coverallsJacoco {
+    reportPath = "uild/reports/jacoco/test/jacocoTestReport.xml"
+
+    apiEndpoint = "https://coveralls.io/api/v1/jobs"
+
+    dryRun = false
+    coverallsRequest = null
+}
