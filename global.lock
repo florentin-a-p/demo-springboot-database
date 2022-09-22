@@ -21,6 +21,16 @@
             "locked": "2.7.3"
         }
     },
+    "jacocoAgent": {
+        "org.jacoco:org.jacoco.agent": {
+            "locked": "0.8.8"
+        }
+    },
+    "jacocoAnt": {
+        "org.jacoco:org.jacoco.ant": {
+            "locked": "0.8.8"
+        }
+    },
     "productionRuntimeClasspath": {
         "org.postgresql:postgresql": {
             "locked": "42.5.0"
