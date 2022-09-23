@@ -21,6 +21,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
@@ -53,6 +54,21 @@ public class TestCountriesController {
     then(countryService).should(times(1)).getCountries();
     assertThat(output).contains("[FLO] /getCountries is called");
   }
+
+  @Test
+  @ExtendWith(OutputCaptureExtension.class)
+  public void getCountriesException_WillReturnCorrectResponse(CapturedOutput output) {
+    // Given
+    given(countryService.getCountries()).willAnswer( invocation -> { throw new Exception(); });
+
+    // When
+    ResponseEntity<List<Country>> actualResponse = countriesController.getCountries();
+
+    // Then
+    assertThat(output).contains("[FLO] /getCountries is called");
+    assertEquals(HttpStatus.CONFLICT,actualResponse.getStatusCode());
+    assertNull(actualResponse.getBody());
+  }
   // end region scenario for getCountries //
 
   // start region scenario for getCountriesWithId //
@@ -73,6 +89,23 @@ public class TestCountriesController {
     then(countryService).should(times(1)).getCountriesWithId(countryId);
     assertThat(output).contains("[FLO] /getCountries/{countryId} is called");
   }
+
+  @Test
+  @ExtendWith(OutputCaptureExtension.class)
+  public void getCountriesWithIdException_WillReturnCorrectResponse(CapturedOutput output) {
+    // Given
+    EasyRandom easyRandom = new EasyRandom();
+    Integer countryId = easyRandom.nextInt();
+    given(countryService.getCountriesWithId(countryId)).willAnswer( invocation -> { throw new Exception(); });
+
+    // When
+    ResponseEntity<Country> actualResponse = countriesController.getCountriesWithId(countryId);
+
+    // Then
+    assertThat(output).contains("[FLO] /getCountries/{countryId} is called");
+    assertEquals(HttpStatus.CONFLICT,actualResponse.getStatusCode());
+    assertNull(actualResponse.getBody());
+  }
   // end region scenario for getCountriesWithId //
 
   // start region scenario for getCountriesWithName //
@@ -92,6 +125,23 @@ public class TestCountriesController {
     assertEquals(country,actualResponse.getBody());
     then(countryService).should(times(1)).getCountriesWithName(countryName);
     assertThat(output).contains("[FLO] /getCountries/countryName is called");
+  }
+
+  @Test
+  @ExtendWith(OutputCaptureExtension.class)
+  public void getCountriesWithNameException_WillReturnCorrectResponse(CapturedOutput output) {
+    // Given
+    EasyRandom easyRandom = new EasyRandom();
+    String countryName = easyRandom.nextObject(String.class);
+    given(countryService.getCountriesWithName(countryName)).willAnswer( invocation -> { throw new Exception(); });
+
+    // When
+    ResponseEntity<Country> actualResponse = countriesController.getCountriesWithName(countryName);
+
+    // Then
+    assertThat(output).contains("[FLO] /getCountries/countryName is called");
+    assertEquals(HttpStatus.CONFLICT,actualResponse.getStatusCode());
+    assertNull(actualResponse.getBody());
   }
   // end region scenario for getCountriesWithName //
 
@@ -115,6 +165,23 @@ public class TestCountriesController {
     then(countryService).should(times(1)).addCountry(country);
     assertThat(output).contains("[FLO] /addCountry is called");
   }
+
+  @Test
+  @ExtendWith(OutputCaptureExtension.class)
+  public void addCountryException_WillReturnCorrectResponse(CapturedOutput output) {
+    // Given
+    EasyRandom easyRandom = new EasyRandom();
+    Country country = easyRandom.nextObject(Country.class);
+    given(countryService.addCountry(country)).willAnswer( invocation -> { throw new Exception(); });
+
+    // When
+    ResponseEntity<Country> actualResponse = countriesController.addCountry(country);
+
+    // Then
+    assertThat(output).contains("[FLO] /addCountry is called");
+    assertEquals(HttpStatus.CONFLICT,actualResponse.getStatusCode());
+    assertNull(actualResponse.getBody());
+  }
   // end region scenario for addCountry //
 
   // start region scenario for updateCountry //
@@ -133,6 +200,23 @@ public class TestCountriesController {
     assertEquals(country,actualResponse.getBody());
     then(countryService).should(times(1)).updateCountry(country);
     assertThat(output).contains("[FLO] /updateCountry is called");
+  }
+
+  @Test
+  @ExtendWith(OutputCaptureExtension.class)
+  public void updateCountryException_WillReturnCorrectResponse(CapturedOutput output) {
+    // Given
+    EasyRandom easyRandom = new EasyRandom();
+    Country country = easyRandom.nextObject(Country.class);
+    given(countryService.updateCountry(country)).willAnswer( invocation -> { throw new Exception(); });
+
+    // When
+    ResponseEntity<Country> actualResponse = countriesController.updateCountry(country);
+
+    // Then
+    assertThat(output).contains("[FLO] /updateCountry is called");
+    assertEquals(HttpStatus.CONFLICT,actualResponse.getStatusCode());
+    assertNull(actualResponse.getBody());
   }
   // end region scenario for updateCountry //
 
@@ -155,6 +239,23 @@ public class TestCountriesController {
     assertEquals(responseMessage,actualResponse.getBody());
     then(countryService).should(times(1)).deleteCountry(id);
     assertThat(output).contains("[FLO] deleteCountry/{countryId} is called");
+  }
+
+  @Test
+  @ExtendWith(OutputCaptureExtension.class)
+  public void deleteCountryException_WillReturnCorrectResponse(CapturedOutput output) {
+    // Given
+    EasyRandom easyRandom = new EasyRandom();
+    Integer id = easyRandom.nextInt();
+    given(countryService.deleteCountry(id)).willAnswer( invocation -> { throw new Exception(); });
+
+    // When
+    ResponseEntity<ResponseMessage> actualResponse = countriesController.deleteCountry(id);
+
+    // Then
+    assertThat(output).contains("[FLO] deleteCountry/{countryId} is called");
+    assertEquals(HttpStatus.CONFLICT,actualResponse.getStatusCode());
+    assertNull(actualResponse.getBody());
   }
   // end region scenario for deleteCountry //
 }
