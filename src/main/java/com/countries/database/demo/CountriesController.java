@@ -18,11 +18,11 @@ import java.util.List;
 @RestController
 @Slf4j
 public class CountriesController {
-  @Autowired
+  @Autowired(required = false)
   CountryService countryService;
 
   @GetMapping(path="/getCountries")
-  public ResponseEntity<List> getCountries() {
+  public ResponseEntity<List<Country>> getCountries() {
     log.info("[FLO] /getCountries is called");
     try {
       return new ResponseEntity<>(countryService.getCountries(), HttpStatus.OK);
