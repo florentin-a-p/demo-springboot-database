@@ -13,8 +13,10 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.CannotCreateTransactionException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +59,53 @@ public class TestCountriesController {
 
   @Test
   @ExtendWith(OutputCaptureExtension.class)
-  public void getCountriesException_WillReturnCorrectResponse(CapturedOutput output) {
+  public void getCountriesDbExistTblNotExist_WillReturnCorrectResponse(CapturedOutput output) {
+    // Given
+    given(countryService.getCountries()).willAnswer( invocation -> { throw new InvalidDataAccessResourceUsageException(""); });
+
+    // When
+    ResponseEntity<List<Country>> actualResponse = countriesController.getCountries();
+
+    // Then
+    assertThat(output).contains("[FLO] /getCountries is called");
+    assertEquals(HttpStatus.GONE,actualResponse.getStatusCode());
+    assertNull(actualResponse.getBody());
+  }
+
+  @Test
+  @ExtendWith(OutputCaptureExtension.class)
+  public void getCountriesDbDeletedWhileSpringRunning_WillReturnCorrectResponse(CapturedOutput output) {
+    // Given
+    given(countryService.getCountries()).willAnswer( invocation -> { throw new CannotCreateTransactionException(""); });
+
+    // When
+    ResponseEntity<List<Country>> actualResponse = countriesController.getCountries();
+
+    // Then
+    assertThat(output).contains("[FLO] /getCountries is called");
+    assertEquals(HttpStatus.EXPECTATION_FAILED,actualResponse.getStatusCode());
+    assertNull(actualResponse.getBody());
+  }
+
+  @Test
+  @ExtendWith(OutputCaptureExtension.class)
+  public void getCountriesTableEmpty_WillReturnCorrectResponse(CapturedOutput output) {
+    // Given
+    List<Country> countryList = new ArrayList<Country>();
+    given(countryService.getCountries()).willReturn(countryList);
+
+    // When
+    ResponseEntity<List<Country>> actualResponse = countriesController.getCountries();
+
+    // Then
+    assertThat(output).contains("[FLO] /getCountries is called");
+    assertEquals(HttpStatus.NO_CONTENT,actualResponse.getStatusCode());
+    assertNull(actualResponse.getBody());
+  }
+
+  @Test
+  @ExtendWith(OutputCaptureExtension.class)
+  public void getCountriesOtherException_WillReturnCorrectResponse(CapturedOutput output) {
     // Given
     given(countryService.getCountries()).willAnswer( invocation -> { throw new Exception(); });
 
@@ -66,7 +114,7 @@ public class TestCountriesController {
 
     // Then
     assertThat(output).contains("[FLO] /getCountries is called");
-    assertEquals(HttpStatus.CONFLICT,actualResponse.getStatusCode());
+    assertEquals(HttpStatus.I_AM_A_TEAPOT,actualResponse.getStatusCode());
     assertNull(actualResponse.getBody());
   }
   // end region scenario for getCountries //

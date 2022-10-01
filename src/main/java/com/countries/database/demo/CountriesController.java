@@ -2,8 +2,10 @@ package com.countries.database.demo;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.CannotCreateTransactionException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,13 +23,31 @@ public class CountriesController {
   @Autowired(required = false)
   CountryService countryService;
 
+  //@Transactional(timeout = 1)
   @GetMapping(path="/getCountries")
   public ResponseEntity<List<Country>> getCountries() {
     log.info("[FLO] /getCountries is called");
     try {
-      return new ResponseEntity<>(countryService.getCountries(), HttpStatus.OK);
-    } catch (Exception e) {
-      return new ResponseEntity<>(HttpStatus.CONFLICT);
+      ResponseEntity<List<Country>> response = new ResponseEntity<>(countryService.getCountries(), HttpStatus.OK);
+      log.info("[FLO] response length is: "+response.getBody().size());
+
+      if (response.getBody().size() < 1) {
+        throw new EmptyTableException("Data doesn't exist in table!!!");
+      } else {
+        return response;
+      }
+    } catch (InvalidDataAccessResourceUsageException e) { //db exists, tbl doesn't exist
+      log.info("[FLO] exception message is: "+e);
+      return new ResponseEntity<>(HttpStatus.GONE);
+    } catch (CannotCreateTransactionException e) { //during springboot run, db is deleted
+      log.info("[FLO] exception message is: "+e);
+      return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+    } catch (EmptyTableException e) { //tbl exists but is empty
+      log.info("[FLO] exception message is: "+e);
+      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    } catch (Exception e) { //any other exceptions
+      log.info("[FLO] exception message is: "+e);
+      return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
     }
   }
 
