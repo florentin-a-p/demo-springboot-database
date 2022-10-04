@@ -29,7 +29,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 
 @SpringBootTest(classes={CountriesController.class})
-public class TestCountriesController {
+public class TestMockitoCountriesController {
   @Mock
   private CountryService countryService;
   @Mock

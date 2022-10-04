@@ -1,5 +1,6 @@
 package com.countries.database.demo;
 
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="springboot_country_tbl")
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Country {
   @Id
   @Column(name="id")

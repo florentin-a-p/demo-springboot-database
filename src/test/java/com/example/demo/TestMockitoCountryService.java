@@ -22,7 +22,7 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.times;
 
 @SpringBootTest(classes={CountryService.class})
-public class TestCountryService {
+public class TestMockitoCountryService {
 	@Mock
 	private CountryRepository countryRepository;
 	@Mock
