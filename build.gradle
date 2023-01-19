@@ -2,6 +2,12 @@ plugins {
 	id 'org.springframework.boot' version '2.7.3'
 	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
 	id 'java'
+	id 'jacoco'
+}
+
+jacoco {
+    toolVersion = "0.8.5" //jacoco version
+    reportsDir = file("$buildDir/reports/jacoco") //default directory where jacoco generates test reports
 }
 
 group = 'com.example'
@@ -27,6 +33,10 @@ dependencies {
   testImplementation 'org.mockito:mockito-core:4.8.0'
   // https://mvnrepository.com/artifact/org.jeasy/easy-random-core
   testImplementation 'org.jeasy:easy-random-core:5.0.0'
+  testImplementation 'org.jacoco:org.jacoco.core:0.8.5'
+  // https://mvnrepository.com/artifact/junit/junit
+  testImplementation 'junit:junit:4.13.2'
+
 }
 
 tasks.named('test') {
