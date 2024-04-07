@@ -1,0 +1,20 @@
+---
+title: /getCountries
+---
+
+sequenceDiagram
+    participant Frontend
+    participant CountriesController
+    participant CountryService
+    participant CountryRepository
+    participant DB_Country
+
+    Frontend->>+CountriesController: request to list all countries (/getCountries)
+    CountriesController->>+CountryService: get list of all countries
+    CountryService->>+CountryRepository: get list of all countries
+    CountryRepository->>+DB_Country: get list of all countries in db
+    DB_Country->>-CountryRepository: return list of all countries in db
+    CountryRepository->>-CountryService: return list of all countries in db
+    CountryService->>-CountriesController: get list of all countries
+    CountriesController-->>-Frontend: return response of list of all countries (/getCountries)
+

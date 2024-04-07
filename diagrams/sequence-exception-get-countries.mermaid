@@ -1,0 +1,35 @@
+---
+title: /getCountries
+---
+
+sequenceDiagram
+    participant Frontend
+    participant CountriesController
+    participant CountryService
+    participant CountryRepository
+    participant DB_Country
+
+    Frontend->>CountriesController: request to list all countries (/getCountries)
+    activate CountriesController
+    CountriesController->>CountryService: get list of all countries
+    activate CountryService
+    CountryService->>CountryRepository: get list of all countries
+    activate CountryRepository
+    CountryRepository->>DB_Country: get list of all countries in db
+    activate DB_Country
+
+    alt if happy path
+        DB_Country->>CountryRepository: return list of all countries in db
+        deactivate DB_Country
+        CountryRepository->>CountryService: return list of all countries in db
+        CountryService->>CountriesController: get list of all countries
+        CountriesController-->>Frontend: return response of list of all countries (/getCountries)
+    else if db exists, tbl doesn't exist
+        CountryRepository->>CountryService: return InvalidDataAccessResourceUsageException
+        deactivate CountryRepository
+        CountryService->>CountriesController: return InvalidDataAccessResourceUsageException
+        deactivate CountryService
+        CountriesController->>Frontend: return response of HttpStatus.GONE
+        deactivate CountriesController
+    end
+
